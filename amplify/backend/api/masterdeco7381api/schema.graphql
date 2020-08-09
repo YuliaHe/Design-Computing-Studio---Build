@@ -1,0 +1,52 @@
+type Psychologist
+  @model
+  @auth(rules: [{allow: owner}])
+{
+  id: ID!
+  email: String
+  phone: String
+  patients: [Patient] @connection(name: "Patients")
+  appointments: Appointment @connection(name: "AppointmentsPsychologist")
+}
+type Patient
+  @model
+  @auth(rules: [{allow: owner}])
+{
+  id: ID!
+  email: String
+  phone: String
+  appointments: [Appointment] @connection(name: "Appointments")
+  psychologist: Psychologist @connection(name: "Patients")
+  fitness: [Fitness] @connection(name: "Fitness")
+  wellness: [Wellness] @connection(name: "Wellness")
+}
+type Appointment
+  @model
+  @auth(rules: [{allow: owner}])
+{
+  id: ID!
+  patient: Patient @connection(name: "Appointments")
+  psychologist: Psychologist @connection(name: "AppointmentsPsychologist")
+  purpose: String
+  time: String
+}
+type Fitness
+  @model
+  @auth(rules: [{allow: owner}])
+{
+  id: ID!
+  depression: Int
+  anxiety: Int
+  stress: Int
+  patient: Patient @connection(name: "Fitness")
+}
+type Wellness
+  @model
+  @auth(rules: [{allow: owner}])
+{
+  id: ID!
+  distress: Int
+  interpersonal_relation: Int
+  social_role: Int
+  patient: Patient @connection(name: "Wellness")
+}
